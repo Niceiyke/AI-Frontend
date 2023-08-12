@@ -59,48 +59,50 @@ function TranslatePage() {
   return (
     <>
       <Navbar />
-      <div className="container mx-auto mt-8">
+      <div className="container mx-auto mt-8 flex flex-col items-center justify-center h-screen">
         <h1 className="text-3xl font-semibold mb-4">Translate Page</h1>
-        <div className="max-w-md mx-auto mb-4">
-          <Select
-            options={languageOptions}
-            value={fromLanguage}
-            onChange={(selectedOption) => setFromLanguage(selectedOption)}
-            placeholder="Translate from"
-            className="w-full"
-          />
-        </div>
-        <div className="max-w-md mx-auto mb-4">
-          <Select
-            options={languageOptions}
-            value={toLanguage}
-            onChange={(selectedOption) => setToLanguage(selectedOption)}
-            placeholder="Translate to"
-            className="w-full"
-          />
-        </div>
-        <div className="w-full max-w-md mx-auto rounded">
-          <textarea
-            className="w-full max-w-md mx-auto p-2 border rounded mb-2"
-            rows="6"
-            placeholder="Enter text to translate..."
-            value={inputText}
-            onChange={handleInputChange}
-          />
-          <button
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded"
-            onClick={handleTranslate}
-            disabled={isLoading}
-          >
-            {isLoading ? "Translating..." : "Translate"}
-          </button>
-          {error && <p className="mt-2 text-red-600">{error}</p>}
-          {translatedText && (
-            <div className="mt-4">
-              <h2 className="text-xl font-semibold mb-2">Translated Text:</h2>
-              <p>{translatedText}</p>
-            </div>
-          )}
+        <div className="w-full max-w-md mx-auto rounded flex flex-col items-center">
+          <div className="max-w-md mx-auto mb-4">
+            <Select
+              options={languageOptions}
+              value={fromLanguage}
+              onChange={(selectedOption) => setFromLanguage(selectedOption)}
+              placeholder="Translate from"
+              className="w-full"
+            />
+          </div>
+          <div className="max-w-md mx-auto mb-4">
+            <Select
+              options={languageOptions}
+              value={toLanguage}
+              onChange={(selectedOption) => setToLanguage(selectedOption)}
+              placeholder="Translate to"
+              className="w-full"
+            />
+          </div>
+          <div className="w-full max-w-md mx-auto rounded">
+            <textarea
+              className="w-full max-w-md mx-auto p-2 border rounded mb-2"
+              rows="6"
+              placeholder="Enter text to translate..."
+              value={inputText}
+              onChange={handleInputChange}
+            />
+            <button
+              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded"
+              onClick={handleTranslate}
+              disabled={isLoading}
+            >
+              {isLoading ? "Translating..." : "Translate"}
+            </button>
+            {error && <p className="mt-2 text-red-600">{error}</p>}
+            {translatedText && (
+              <div className="mt-4">
+                <h2 className="text-xl font-semibold mb-2">Translated Text:</h2>
+                <p>{translatedText}</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </>

@@ -2,16 +2,30 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 
-
+const links = [
+  { to: "/chat", text: "Chat" },
+  { to: "/summerize", text: "Summerize Text" },
+  { to: "/translate", text: "Translate Your Text" },
+  { to: "/business-name-generator", text: "Generate Business Name" },
+  { to: "/prompt-generator", text: "Generate AI Prompt" },
+  { to: "/sql-generator", text: "Generate SQL Query" },
+  // Add more links here
+];
 
 function MobileNavbar() {
- const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
+
+  const dropdownStyles = {
+    container: "fixed  bg-gray-800 mt-2 py-2 w-48 rounded shadow-lg right-0",
+    link: "block px-4 py-2 text-white hover:bg-gray-700",
+  };
+
   return (
-    <>
+    <React.Fragment>
       <nav className="lg:hidden bg-gray-800 py-4">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex justify-between items-center">
@@ -29,47 +43,24 @@ function MobileNavbar() {
                 <FaBars />
               </button>
               {dropdownOpen && (
-                <div className="absolute bg-gray-800 mt-2 py-2 w-48 rounded shadow-lg">
-                  <Link
-                    to="/summerize"
-                    className="block px-4 py-2 text-white hover:bg-gray-700"
-                  >
-                    Summerize Text
-                  </Link>
-                  <Link
-                    to="/translate"
-                    className="block px-4 py-2 text-white hover:bg-gray-700"
-                  >
-                    Translate Your Text
-                  </Link>
-
-                  <Link
-                    to="/business-name-generator"
-                    className="block px-4 py-2 text-white hover:bg-gray-700"
-                  >
-                    Generate Business Name
-                  </Link>
-                  <Link
-                    to="/prompt-generator"
-                    className="block px-4 py-2 text-white hover:bg-gray-700"
-                  >
-                    Generate AI Prompt
-                  </Link>
-                  <Link
-                    to="/sql-generator"
-                    className="block px-4 py-2 text-white hover:bg-gray-700"
-                  >
-                    Generate SQL Qurey
-                  </Link>
-                  {/* Add more links here */}
+                <div className={dropdownStyles.container}>
+                  {links.map((link, index) => (
+                    <Link
+                      key={index}
+                      to={link.to}
+                      className={dropdownStyles.link}
+                    >
+                      {link.text}
+                    </Link>
+                  ))}
                 </div>
               )}
             </div>
           </div>
         </div>
       </nav>
-    </>
+    </React.Fragment>
   );
 }
 
-export default MobileNavbar
+export default MobileNavbar;

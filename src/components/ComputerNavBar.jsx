@@ -18,6 +18,12 @@ function ComputerNavBar() {
               {
                 <div className="flex bg-gray-800 mt-2 py-2 rounded shadow-lg">
                   <Link
+                    to="/chat"
+                    className="px-4 py-2 text-white hover:bg-gray-700"
+                  >
+                    Chat
+                  </Link>
+                  <Link
                     to="/summerize"
                     className="px-4 py-2 text-white hover:bg-gray-700"
                   >

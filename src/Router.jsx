@@ -7,12 +7,14 @@ import TranslatePage from "./pages/Translate";
 import BusinessNameGeneratorPage from "./pages/BusinessName";
 import PromptGenerator from "./pages/PromptGenerator";
 import SQLGenerator from "./pages/SQLGenerator";
+import ChatApp from "./pages/ChatPage";
 
 function General_Routes() {
   return (
     <BrowserRouter>
       <Routes>
         <Route exact path="/" element={<App />} />
+        <Route path="/chat" element={<ChatApp />} />
         <Route path="/summerize" element={<SummarizePage />} />
         <Route path="/translate" element={<TranslatePage />} />
         <Route
@@ -20,7 +22,7 @@ function General_Routes() {
           element={<BusinessNameGeneratorPage />}
         />
         <Route path="/prompt-generator" element={<PromptGenerator />} />
-        <Route path="/sql-generator" element={<SQLGenerator/>} />
+        <Route path="/sql-generator" element={<SQLGenerator />} />
         {/* Add more routes as needed */}
       </Routes>
     </BrowserRouter>

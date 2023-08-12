@@ -10,10 +10,10 @@ function App() {
       <Navbar />
 
       {/* Hero Section Component */}
-      <HeroSection />
+    
 
       {/* Services Section Component */}
-      <ServicesSection />
+      
     </>
   );
 }
