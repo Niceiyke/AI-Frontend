@@ -60,7 +60,7 @@ function SummarizePage() {
   };
 
   const isValidYouTubeURL = (url) => {
-    const youtubeURLPattern = /^(https?:\/\/)?(www\.)?youtube\.com\/(watch\?v=[\w-]+|embed\/[\w-]+|v\/[\w-]+|channels\/(?:[\w-]+\/)?[\w-]+|user\/[\w-]+|playlist\?list=[\w-]+)/;  
+    const youtubeURLPattern = /^(https?:\/\/)?(www\.|m\.)?youtube\.com\/(watch\?v=[\w-]+|embed\/[\w-]+|v\/[\w-]+|channels\/(?:[\w-]+\/)?[\w-]+|user\/[\w-]+|playlist\?list=[\w-]+)/;  
 return youtubeURLPattern.test(url);
   };
 
