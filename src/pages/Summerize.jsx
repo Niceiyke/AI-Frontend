@@ -60,13 +60,8 @@ function SummarizePage() {
   };
 
   const isValidYouTubeURL = (url) => {
-    const youtubeURLPattern = /
-
-Of course! Here's the YouTube URL validation regex pattern in JavaScript:
-
-javascript
-Copy code
-const youtubeRegex = /^(https?:\/\/)?(www\.)?youtube\.com\/(watch\?v=[\w-]+|embed\/[\w-]+|v\/[\w-]+|channels\/(?:[\w-]+\/)?[\w-]+|user\/[\w-]+|playlist\?list=[\w-]+)/;  return youtubeURLPattern.test(url);
+    const youtubeURLPattern = /^(https?:\/\/)?(www\.)?youtube\.com\/(watch\?v=[\w-]+|embed\/[\w-]+|v\/[\w-]+|channels\/(?:[\w-]+\/)?[\w-]+|user\/[\w-]+|playlist\?list=[\w-]+)/;  
+return youtubeURLPattern.test(url);
   };
 
   return (
