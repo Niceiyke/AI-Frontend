@@ -71,10 +71,10 @@ function ChatApp() {
 
   return (
     <div className=" min-h-screen flex flex-col bg-gray-100">
-      <div className="flex-grow p-4 mx-auto">
+      <div className="flex-grow p-32">
         <div
           ref={chatWindowRef}
-          className="max-h-[400px] overflow-y-auto space-y-2"
+          className="max-h-[400px] "
         >
           {messages.map((message, index) => (
             <div
@@ -101,7 +101,7 @@ function ChatApp() {
           )}
         </div>
       </div>
-      <div className="flex justify-between p-4 bg-gray-200">
+      <div className="flex justify-between p-32 ">
         <input
           className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring focus:border-blue-300"
           type="text"
