@@ -86,8 +86,8 @@ function ChatApp() {
               <div
                 className={`message px-4 py-2 ${
                   message.role === "assistant"
-                    ? "bg-gray-100 text-gray-700"
-                    : "bg-blue-500 text-white text-end "
+                    ? "bg-gray-100 border-8 text-gray-700"
+                    : "bg-green-800  border-8 text-white text-end "
                 }`}
               >
                 {message.content}
