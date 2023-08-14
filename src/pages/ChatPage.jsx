@@ -86,7 +86,7 @@ function ChatApp() {
                 className={`message px-4 py-2 ${
                   message.role === "assistant"
                     ? "bg-gray-100 text-gray-700"
-                    : "bg-blue-500 text-white"
+                    : "bg-blue-500 text-white text-end "
                 }`}
               >
                 {message.content}
