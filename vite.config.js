@@ -9,6 +9,7 @@ export default defineConfig(({ command, mode }) => {
     return {
       define: {
         "process.env.BASEURL": JSON.stringify(env.BASEURL),
+        "process.env.OPENAI_API_KEY": JSON.stringify(env.OPENAI_API_KEY),
 
         // If you want to exposes all env variables, which is not recommended
         // 'process.env': env

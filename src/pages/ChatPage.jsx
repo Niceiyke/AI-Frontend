@@ -1,26 +1,35 @@
-import React, { useState } from "react";
-import AxiosInstance from '../config/AxiosConfig'
+import React, { useState, useRef, useEffect } from "react";
+import AxiosInstance from "../config/AxiosConfig";
+import { Configuration, OpenAIApi,ChatCompletionRequestMessage } from "openai";
 
 
 
+const generateResponse = async (messages) => {
+  const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
-const generateResponse= async(message)=>{
+const openai = new OpenAIApi(configuration);
 
-  const response=await AxiosInstance.post("/api/chat",{
-    message:message
-  })
+const response=openai.createChatCompletion({
+  model:"gpt-3.5-turbo",messages:messages
+})
+  
 
-  console.log(response.data)
-
-  return response
-
-
-
-}
+  return response;
+};
 
 function ChatApp() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+
+  const chatWindowRef = useRef(null);
+
+  useEffect(() => {
+    // Auto-scroll to the bottom of the chat window when new messages arrive
+    chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+  }, [messages]);
 
   const handleInputChange = (event) => {
     setNewMessage(event.target.value);
@@ -29,62 +38,83 @@ function ChatApp() {
   const handleSendMessage = async () => {
     if (newMessage.trim() === "") return;
 
-    const userMessage = newMessage;
+    const humanMessage = {
+      role: "user",
+      content: newMessage,
+    };
 
-    const updatedMessages = [
-      ...messages,
-      { text: userMessage, sender: "user" },
-    ];
-    setMessages(updatedMessages);
-    setNewMessage("");
+    setMessages((current) => [
+      ...current,
+      humanMessage,
+    ]);
+
+    setIsTyping(true);
 
     try {
+      
+
+      const userMessage =[...messages, humanMessage]
+        
+
       const botResponse = await generateResponse(userMessage);
 
-      const updatedMessagesWithBot = [
-        ...updatedMessages,
-        { text: botResponse.data, sender: "bot" },
-      ];
-      setMessages(updatedMessagesWithBot);
+
+      setMessages((current)=>[...current,botResponse.data.choices[0].message])
+
+      setIsTyping(false);
     } catch (error) {
       console.error("Error generating bot response:", error);
+      setIsTyping(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md bg-white shadow-md rounded-lg overflow-hidden">
-        <div className="px-6 py-4">
-          <div className="message-list space-y-2">
-            {messages.map((message, index) => (
+    <div className="min-h-screen flex flex-col bg-gray-100">
+      <div className="flex-grow p-4">
+        <div
+          ref={chatWindowRef}
+          className="max-h-[400px] overflow-y-auto space-y-2"
+        >
+          {messages.map((message, index) => (
+            <div
+              key={index}
+              className={`message-wrapper ${
+                message.role === "assistant" ? "self-start" : "self-end"
+              }`}
+            >
               <div
-                key={index}
                 className={`message px-4 py-2 ${
-                  message.sender === "user"
-                    ? "bg-blue-500 text-white self-end"
-                    : "bg-gray-100 text-gray-700 self-start"
+                  message.role === "assistant"
+                    ? "bg-gray-100 text-gray-700"
+                    : "bg-blue-500 text-white"
                 }`}
               >
-                {message.text}
+                {message.content}
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+          {isTyping && (
+            <div className="message px-4 py-2 bg-gray-100 text-gray-700 self-start">
+              Bot is typing...
+            </div>
+          )}
         </div>
-        <div className="px-6 py-3 bg-gray-200">
-          <input
-            className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring focus:border-blue-300"
-            type="text"
-            placeholder="Type your message..."
-            value={newMessage}
-            onChange={handleInputChange}
-          />
-          <button
-            className="ml-2 px-4 py-2 rounded-lg bg-blue-500 text-white focus:outline-none focus:ring focus:border-blue-300"
-            onClick={handleSendMessage}
-          >
-            Send
-          </button>
-        </div>
+      </div>
+      <div className="p-4 bg-gray-200">
+        <input
+          className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring focus:border-blue-300"
+          type="text"
+          placeholder="Type your message..."
+          value={newMessage}
+          onChange={handleInputChange}
+        />
+        <button
+          className="ml-2 px-4 py-2 rounded-lg bg-blue-500 text-white focus:outline-none focus:ring focus:border-blue-300"
+          onClick={handleSendMessage}
+          disabled={isTyping}
+        >
+          Send
+        </button>
       </div>
     </div>
   );
