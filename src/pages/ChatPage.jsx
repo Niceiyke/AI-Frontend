@@ -70,8 +70,8 @@ function ChatApp() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100">
-      <div className="flex-grow p-4">
+    <div className=" min-h-screen flex flex-col bg-gray-100">
+      <div className="flex-grow p-4 mx-auto">
         <div
           ref={chatWindowRef}
           className="max-h-[400px] overflow-y-auto space-y-2"
@@ -101,7 +101,7 @@ function ChatApp() {
           )}
         </div>
       </div>
-      <div className="p-4 bg-gray-200">
+      <div className="flex justify-between p-4 bg-gray-200">
         <input
           className="w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring focus:border-blue-300"
           type="text"
@@ -110,11 +110,11 @@ function ChatApp() {
           onChange={handleInputChange}
         />
         <button
-          className="ml-2 px-4 py-2 rounded-lg bg-blue-500 text-white focus:outline-none focus:ring focus:border-blue-300"
+          className="ml-2 px-4 py-2 rounded-lg bg-green-800 text-white focus:outline-none focus:ring focus:border-green-600"
           onClick={handleSendMessage}
           disabled={isTyping}
         >
-          Send
+          {!isTyping? "Send":"replying"}
         </button>
       </div>
     </div>
