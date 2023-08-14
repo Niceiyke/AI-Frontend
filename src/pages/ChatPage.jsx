@@ -1,22 +1,20 @@
 import React, { useState, useRef, useEffect } from "react";
 import AxiosInstance from "../config/AxiosConfig";
-import { Configuration, OpenAIApi,ChatCompletionRequestMessage } from "openai";
-
-
+import { Configuration, OpenAIApi } from "openai";
 
 const generateResponse = async (messages) => {
   const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+    apiKey: process.env.OPENAI_API_KEY,
+  });
 
-const openai = new OpenAIApi(configuration);
+  const openai = new OpenAIApi(configuration);
 
-const response=openai.createChatCompletion({
-  model:"gpt-3.5-turbo",messages:messages
-})
-  
+  const response = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    messages: messages,
+  });
 
-  return response;
+  return response.data.choices[0].message.content;
 };
 
 function ChatApp() {
@@ -43,29 +41,32 @@ function ChatApp() {
       content: newMessage,
     };
 
-    setMessages((current) => [
-      ...current,
-      humanMessage,
-    ]);
-    setNewMessage('')
-
+    setMessages((current) => [...current, humanMessage]);
+    setNewMessage("");
     setIsTyping(true);
 
     try {
-      
-
-      const userMessage =[...messages, humanMessage]
-        
-
+      const userMessage = [...messages, humanMessage];
       const botResponse = await generateResponse(userMessage);
 
+      const botMessage = {
+        role: "assistant",
+        content: botResponse,
+      };
 
-      setMessages((current)=>[...current,botResponse.data.choices[0].message])
+      setMessages((current) => [...current, botMessage]);
 
       setIsTyping(false);
     } catch (error) {
       console.error("Error generating bot response:", error);
       setIsTyping(false);
+    }
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSendMessage();
     }
   };
 
@@ -105,13 +106,14 @@ function ChatApp() {
           placeholder="Type your message..."
           value={newMessage}
           onChange={handleInputChange}
+          onKeyPress={handleKeyPress}
         />
         <button
           className="ml-2 px-4 py-2 rounded-lg bg-green-800 text-white focus:outline-none focus:ring focus:border-green-600"
           onClick={handleSendMessage}
           disabled={isTyping}
         >
-          {!isTyping ? "Send" : "replying"}
+          {!isTyping ? "Send" : "Replying"}
         </button>
       </div>
     </div>
