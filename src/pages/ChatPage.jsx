@@ -47,6 +47,7 @@ function ChatApp() {
       ...current,
       humanMessage,
     ]);
+    setNewMessage('')
 
     setIsTyping(true);
 
