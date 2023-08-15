@@ -122,7 +122,7 @@ function ChatApp() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100">
+    <div className="min-h-screen  bg-gray-100">
       <button
         className="lg:hidden bg-gray-200 p-2 rounded-md"
         onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -169,7 +169,7 @@ function ChatApp() {
           {/* ... (rest of your code) */}
           <div className="flex-grow p-4 lg:p-32">
             {activeConversation && (
-              <div ref={chatWindowRef} className="max-h-[400px]">
+              <div ref={chatWindowRef} className="">
                 {conversations
                   .find(
                     (conversation) => conversation.id === activeConversation
@@ -178,14 +178,14 @@ function ChatApp() {
                     <div
                       key={index}
                       className={`message-wrapper ${
-                        message.role === "assistant" ? "self-start" : "self-end"
+                        message.role === "assistant" ? "" : ""
                       }`}
                     >
                       <div
                         className={`message px-2 py-2 ${
                           message.role === "assistant"
-                            ? "bg-gray-100 border-2 mb-2  mr-20 lg:mr-96 text-gray-700"
-                            : "bg-green-800  border-2 mb-2 ml-20 lg:ml-96 text-white text-end "
+                            ? "bg-gray-100 border-2 rounded-md mb-2  mr-20 lg:mr-96 text-gray-700"
+                            : "bg-green-800  border-2 rounded-md mb-2 ml-20 lg:ml-96 text-white   "
                         }`}
                       >
                         {message.content}
