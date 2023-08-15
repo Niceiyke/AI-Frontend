@@ -4,8 +4,7 @@ import { FaBars } from "react-icons/fa";
 import { Configuration, OpenAIApi } from "openai";
 
 const generateResponse = async (messages) => {
-  // ... (your existing generateResponse function)
-    const configuration = new Configuration({
+  const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
   });
 
@@ -24,7 +23,8 @@ function ChatApp() {
   const [activeConversation, setActiveConversation] = useState(null);
   const [newMessage, setNewMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false); // New state for sidebar
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedRole, setSelectedRole] = useState('Bishop David Oyedepo');
 
   const chatWindowRef = useRef(null);
 
@@ -39,6 +39,13 @@ function ChatApp() {
     localStorage.setItem("chatConversations", JSON.stringify(conversations));
   }, [conversations]);
 
+  const systemRoles = [
+    { id: "Bishop David Oyedepo", name: "Bishop David Oyedepo" },
+    { id: "Pastor chris Oyakhilome", name: "Pastor Chris" },
+    { id: "pastor Paul Enech", name: "Pastor Paul Eneche" },
+    // Add more roles as needed
+  ];
+
   const handleInputChange = (event) => {
     setNewMessage(event.target.value);
   };
@@ -48,9 +55,17 @@ function ChatApp() {
       id: uuidv4(),
       messages: [
         {
-          role: "system",
-          content:
-            "your are professional football coach by name Arsen Wenger.You have coached arsenal football club",
+          role: 'system',
+          content: `Your name is ${selectedRole}.you are a powerful and annointed minster of God, 
+          you use your minstry to propagate the word of God. leading people to Christ
+          Healing the sick, counselling the broken hearted.
+
+          always be assertive and compassionate  in your responses.
+
+          use scriptures where relevant to make your point.
+
+          if you do not have an answer to any question, gently decline answering it, while urging to remain in the context of discussions.
+          `,
         },
       ],
     };
@@ -60,7 +75,7 @@ function ChatApp() {
 
   const handleSetActiveConversation = (conversationId) => {
     setActiveConversation(conversationId);
-    setSidebarOpen(false)
+    setSidebarOpen(false);
   };
 
   const handleDeleteConversation = (conversationId) => {
@@ -94,7 +109,7 @@ function ChatApp() {
       const activeConversationObj = conversations.find(
         (conversation) => conversation.id === activeConversation
       );
-      console.log(activeConversationObj)
+      console.log(activeConversationObj);
       const botResponse = await generateResponse(
         activeConversationObj.messages
       );
@@ -129,23 +144,34 @@ function ChatApp() {
   };
 
   return (
-    <div className="min-h-screen  bg-gray-100">
-      <button
-        className="lg:hidden bg-gray-200 p-2 rounded-md"
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-      >
-        <FaBars />
-      </button>
-      <button
-        className="bg-blue-500 text-white px-4 py-2 rounded-md "
-        onClick={handleStartNewConversation}
-      >
-        Start New Conversation
-      </button>
-      <div className="flex-grow lg:p-12">
+    <div className="min-h-screen bg-gray-100">
+      <div className="flex justify-between px-12 lg:justify-center mt-4 mb-4">
+        <button
+          className="lg:hidden bg-gray-200 p-2 rounded-md"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+        >
+          <FaBars />
+        </button>
+        <select
+          value={selectedRole}
+          onChange={(e) => setSelectedRole(e.target.value)}
+          className="bg-gray-100 p-2 rounded-md"
+        >
+          {systemRoles.map((role) => (
+            <option key={role.id} value={role.id}>
+              {role.name}
+            </option>
+          ))}
+        </select>
+        <button
+          className="bg-blue-500 text-white px-4 py-2 rounded-md "
+          onClick={handleStartNewConversation}
+        >
+          Start New Conversation
+        </button>
+      </div>
+      <div className="flex-grow border-4 m">
         <div className="block lg:flex">
-          {/* Button to toggle the sidebar */}
-
           {/* Sidebar dropdown */}
           <div
             className={`lg:w-1/4 bg-gray-100 p-4 space-y-4 first-line: ${
@@ -173,8 +199,7 @@ function ChatApp() {
               </div>
             ))}
           </div>
-          {/* ... (rest of your code) */}
-          <div className="flex-grow p-4 lg:p-32">
+          <div className="flex-grow p-4 ">
             {activeConversation && (
               <div ref={chatWindowRef} className="">
                 {conversations
@@ -182,20 +207,20 @@ function ChatApp() {
                     (conversation) => conversation.id === activeConversation
                   )
                   .messages.filter((msg) => {
-                    return msg.role != "system";
+                    return msg.role !== "system";
                   })
                   .map((message, index) => (
                     <div
                       key={index}
                       className={`message-wrapper ${
-                        message.role === "assistant" ? "" : ""
+                        message.role === "assistant" ? "" : "relative"
                       }`}
                     >
                       <div
                         className={`message px-2 py-2 ${
                           message.role === "assistant"
-                            ? "bg-gray-100 border-2 rounded-md mb-2  mr-20 lg:mr-96 text-gray-700"
-                            : "bg-green-800  border-2 rounded-md mb-2 ml-20 lg:ml-96 text-white   "
+                            ? "bg-gray-100 border-2 rounded-md mb-4 lg:w-3/6   text-gray-700"
+                            : "bg-green-800  border-2 rounded-md mb-4 lg:w-fit lg:absolute lg:right-0  text-white text-end"
                         }`}
                       >
                         {message.content}
@@ -236,4 +261,3 @@ function ChatApp() {
 }
 
 export default ChatApp;
-
