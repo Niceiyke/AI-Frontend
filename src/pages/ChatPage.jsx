@@ -46,7 +46,13 @@ function ChatApp() {
   const handleStartNewConversation = () => {
     const newConversation = {
       id: uuidv4(),
-      messages: [],
+      messages: [
+        {
+          role: "system",
+          content:
+            "your are professional football coach by name Arsen Wenger.You have coached arsenal football club",
+        },
+      ],
     };
     setConversations([...conversations, newConversation]);
     setActiveConversation(newConversation.id);
@@ -88,6 +94,7 @@ function ChatApp() {
       const activeConversationObj = conversations.find(
         (conversation) => conversation.id === activeConversation
       );
+      console.log(activeConversationObj)
       const botResponse = await generateResponse(
         activeConversationObj.messages
       );
@@ -174,7 +181,10 @@ function ChatApp() {
                   .find(
                     (conversation) => conversation.id === activeConversation
                   )
-                  .messages.map((message, index) => (
+                  .messages.filter((msg) => {
+                    return msg.role != "system";
+                  })
+                  .map((message, index) => (
                     <div
                       key={index}
                       className={`message-wrapper ${
